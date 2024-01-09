@@ -7,6 +7,8 @@ const { nanoid } = require('nanoid');
 let Core = {};
 
 Core.CSV_SEP = ",";
+Core.DIR_PUBLIC = path.join(__dirname,"/../public/");
+
 Core.conf = {};
 
 
@@ -45,6 +47,18 @@ Core.generateSessionID = ()=>{
     return sesid;
 };
 
+Core.getFullPathCSV = (sesid, gid)=>{
+    if (gid){
+        let fname = gid+"/"+sesid+".csv";
+        fname = path.join(Core.dirRecords, fname);
+        return fname;
+    }
+
+    let fname = sesid+".csv";
+    fname = path.join(Core.dirRecords, fname);
+    return fname;
+};
+
 Core.requestNewSession = (o)=>{
     let res = {};
 
@@ -57,21 +71,16 @@ Core.requestNewSession = (o)=>{
     let sesid = Core.generateSessionID();
     console.log("New session ID: "+sesid);
 
-    let fname = "";
-
     let groupid = o.groupid;
+    let fname = Core.getFullPathCSV(sesid,groupid);
+
     if (groupid){
         let dirgroup = path.join(Core.dirRecords,groupid);
         if (!fs.existsSync(dirgroup)) makeDir.sync(dirgroup);
 
-        fname = groupid+"/"+sesid+".csv";
         res.groupid = groupid;
     }
-    else {
-        fname = sesid+".csv";
-    }
 
-    fname = path.join(Core.dirRecords, fname);
     console.log(fname)
 
     if (fs.existsSync(fname)){
@@ -91,9 +100,21 @@ Core.requestNewSession = (o)=>{
 };
 
 Core.updateSession = (o)=>{
-    if (!o.id) return;
+    if (!o.id) return false;
 
-    let data = o.data;
+    let data = o.data + "\n";
+    if (!data) return false;
+
+    let fname = Core.getFullPathCSV(o.id, o.groupid);
+    if (!fs.existsSync(fname)) return false;
+
+    fs.appendFile(fname, data, 'utf8', err => {
+        if (err) throw err;
+        
+        console.log("Chunk added in CSV:"+fname);
+    });
+
+    return true;
 };
 
 module.exports = Core;

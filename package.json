@@ -13,6 +13,8 @@
     "fast-glob": "^3.3.2",
     "make-dir": "^4.0.0",
     "nanoid": "3.3.4",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   }
 }
