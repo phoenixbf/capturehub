@@ -30,18 +30,40 @@ API.init = (app)=>{
 	 * /api/session:
 	 *   post:
 	 *     summary: Request a new session
-	 *     description: xxx.
+	 *     description: ...
 	*/
 	app.post(API.BASE+"session/", (req, res) => {
 		let r = Core.requestNewSession(req.body);
 		res.send(r);
 	});
 
-	// Record chunk
+	/**
+	 * @swagger
+	 * /api/session:
+	 *   put:
+	 *     summary: Update existing session with new data chunk
+	 *     description: ...
+	*/
 	app.put(API.BASE+"session/", (req, res) => {
 		let r = Core.updateSession(req.body);
 
 		res.send(r);
+	});
+
+	/**
+	 * @swagger
+	 * /api/session:
+	 *   get:
+	 *     summary: Retrieve session CSV given ID
+	 *     description: ...
+	*/
+	app.get(API.BASE+"sessions/:id", (req, res) => {
+		let sesid = req.params.id;
+
+		sesid = sesid.split("@");
+
+		let fpath = Core.getFullPathCSV(sesid[0], sesid[1]);
+		res.sendFile(fpath);
 	});
 
 	const swaggerSpec = swaggerJSDoc(swoptions);

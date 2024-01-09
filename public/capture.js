@@ -2,7 +2,7 @@ let CaptureHub = {};
 window.CaptureHub = CaptureHub;
 
 CaptureHub.T_INT      = 400; //400;
-CaptureHub.CHUNK_SIZE = 50
+CaptureHub.CHUNK_SIZE = 30
 
 CaptureHub._addr = undefined;
 
@@ -26,10 +26,6 @@ CaptureHub.init = ()=>{
 
     CaptureHub._resetDataChunk();
     CaptureHub._bRec = true;
-};
-
-CaptureHub.setSessionGroup = (gid)=>{
-    // TODO:
 };
 
 CaptureHub.setHubServer = (addr)=>{
@@ -63,7 +59,7 @@ CaptureHub._sendDataChunk = ()=>{
     .then((json) => {
         CaptureHub._resetDataChunk();
         CaptureHub._bSendingChunk = false;
-        console.log("Chunk sent: "+sdata);
+        //console.log("Chunk sent: "+sdata);
     });
 };
 
@@ -120,7 +116,7 @@ CaptureHub.stop = ()=>{
     
     CaptureHub._bRec = false;
     CaptureHub._bStarted = false;
-    
+
     console.log("STOP");
 }
 
