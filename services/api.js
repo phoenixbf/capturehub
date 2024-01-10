@@ -52,7 +52,7 @@ API.init = (app)=>{
 
 	/**
 	 * @swagger
-	 * /api/session:
+	 * /api/sessions:
 	 *   get:
 	 *     summary: Retrieve session CSV given ID
 	 *     description: ...
