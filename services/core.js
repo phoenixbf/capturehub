@@ -23,7 +23,7 @@ Core.init = ()=>{
 		Core.conf = JSON.parse( fs.readFileSync(configpath, 'utf8') );
 		console.log("Found custom config " + configpath);
 
-        if (Core.conf && Core.conf.recordsfolder) Core.dirRecords = Core.conf.recordsfolder;
+        if (Core.conf.recordsfolder) Core.dirRecords = Core.conf.recordsfolder;
     }
 
     if (!fs.existsSync(Core.dirRecords)) makeDir.sync(Core.dirRecords);
