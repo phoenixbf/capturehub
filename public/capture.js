@@ -16,20 +16,38 @@ CaptureHub.init = ()=>{
     CaptureHub._addr = path;
     console.log(CaptureHub._addr);
 
-    CaptureHub._bStarted = false;
-    CaptureHub._id = undefined;
-    CaptureHub._bSendingChunk = false;
+    CaptureHub._id  = undefined;
+    CaptureHub._gid = undefined;
     
-    //CaptureHub._frame = {};
-
-    window.setInterval(CaptureHub._mark, CaptureHub.T_INT);
+    CaptureHub._bFirstRow = true;
+    CaptureHub._bSendingChunk = false;
 
     CaptureHub._resetDataChunk();
     CaptureHub._bRec = true;
+
+    CaptureHub._uf = undefined;
+};
+
+CaptureHub.start = ()=>{
+    if (CaptureHub._uf) return CaptureHub;
+
+    CaptureHub._uf = window.setInterval(CaptureHub._tick, CaptureHub.T_INT);
+    return CaptureHub;
+};
+
+CaptureHub.setOnFrame = (of)=>{
+    CaptureHub.onFrame = of;
+    return CaptureHub;
+};
+
+CaptureHub.setGroupID = (gid)=>{
+    CaptureHub._gid = gid;
+    return CaptureHub;
 };
 
 CaptureHub.setHubServer = (addr)=>{
     CaptureHub._addr = addr;
+    return CaptureHub;
 };
 
 CaptureHub._resetDataChunk = ()=>{
@@ -60,25 +78,36 @@ CaptureHub._sendDataChunk = ()=>{
         CaptureHub._resetDataChunk();
         CaptureHub._bSendingChunk = false;
         //console.log("Chunk sent: "+sdata);
+        console.log("Datachunk sent");
     });
 };
 
-CaptureHub._mark = ()=>{
+CaptureHub._tick = ()=>{
     if (!CaptureHub._bRec) return;
     if (!CaptureHub.onFrame) return;
 
     let S = CaptureHub.onFrame();
 
-    if (!CaptureHub._bStarted){
+    CaptureHub.frame( S );
+};
+
+CaptureHub.frame = (S)=>{
+    if (!S) return CaptureHub;
+
+    if (CaptureHub._bFirstRow){
         let fields = [];
         for (let a in S) fields.push(a);
 
         CaptureHub.requestNewSession(fields);
-        CaptureHub._bStarted = true;
-        return;
+        CaptureHub._bFirstRow = false;
+        return CaptureHub;
     }
 
-    if (!CaptureHub._id) return;
+    if (!CaptureHub._id){
+        CaptureHub._bFirstRow = true;
+        console.log("ERROR: no valid session ID");
+        return CaptureHub;
+    }
 
     let row = [];
     for (let a in S) row.push(S[a]);
@@ -89,14 +118,18 @@ CaptureHub._mark = ()=>{
     CaptureHub._rcount++;
 
     if (CaptureHub._rcount >= CaptureHub.CHUNK_SIZE) CaptureHub._sendDataChunk();
+    return CaptureHub;
 };
 
-CaptureHub.requestNewSession = (fields, groupid)=>{
+CaptureHub.requestNewSession = (fields)=>{
+    let gid = CaptureHub._gid;
+    console.log(gid)
+
     fetch(CaptureHub._addr+"api/session", {
         method: "POST",
         body: JSON.stringify({
             fields: fields,
-            groupid: groupid
+            groupid: CaptureHub._gid
         }),
         headers: {
             "Content-type": "application/json; charset=UTF-8"
@@ -109,18 +142,20 @@ CaptureHub.requestNewSession = (fields, groupid)=>{
         CaptureHub._id  = json.id;
         CaptureHub._gid = json.groupid;
     });
+
+    return CaptureHub;
 };
 
 CaptureHub.stop = ()=>{
     CaptureHub._sendDataChunk();
     
     CaptureHub._bRec = false;
-    CaptureHub._bStarted = false;
+    CaptureHub._bFirstRow = true;
+    CaptureHub._uf = undefined;
 
     console.log("STOP");
+    return CaptureHub;
 }
 
 
-window.addEventListener( 'load', ()=>{
-    CaptureHub.init();
-});
+CaptureHub.init();
