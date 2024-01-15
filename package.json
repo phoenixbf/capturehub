@@ -9,6 +9,7 @@
   "author": "Bruno Fanini (CNR ISPC)",
   "license": "LGPL-3.0-or-later",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "express": "^4.18.2",
     "fast-glob": "^3.3.2",
     "http-proxy-middleware": "^2.0.6",

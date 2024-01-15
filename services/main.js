@@ -9,6 +9,8 @@ let PORT = 8070;
 
 let app = express();
 app.use(express.json({ limit: '50mb' }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', express.static(Core.DIR_PUBLIC));
 

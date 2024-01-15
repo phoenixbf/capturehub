@@ -1,5 +1,6 @@
 const Core = require('./core');
 
+const bodyParser = require('body-parser');
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUI    = require("swagger-ui-express");
 
@@ -52,7 +53,7 @@ API.init = (app)=>{
 
 	/**
 	 * @swagger
-	 * /api/sessions:
+	 * /api/sessions/{ID}:
 	 *   get:
 	 *     summary: Retrieve session CSV given ID
 	 *     description: ...
