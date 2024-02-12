@@ -1,0 +1,83 @@
+{
+    "openapi": "3.0.0",
+
+    "info": {
+      "version": "1.0.0",
+      "title": "CaptureHub API",
+      "description": "This is the REST API for CaptureHub service, developed under H2IOSC project as part of task 7.7 (Immersive Analytics Hub). The service allows remote devices, labs, research nodes, online web-applications or public exhibits to track interactive sessions. The initial request allows to define custom attributes: if successful, a session ID is returned to client.",
+
+      "__contact": {
+        "name": "Swagger API Team",
+        "email": "apiteam@swagger.io",
+        "url": "http://swagger.io"
+      },
+      "__license": {
+        "name": "Apache 2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+    },
+    "__servers": [
+      {
+        "url": "https://...."
+      }
+    ],
+
+    "paths": {
+        "/api/session": {
+            "post":{
+                "summary": "Request a new session",
+                "description": "Request a new session, providing attributes (fields) and optional group",
+                "requestBody":{
+                    "description": "fields in the form of strings array, and an optional group ID",
+                    "content":{
+                        "application/json":{
+                            "example":{
+                                "fields": ["x","y","z"],
+                                "groupid": "experiment01"
+                            }
+                        }
+                    }
+                }
+            },
+
+            "put":{
+                "summary": "Update an existing session",
+                "description": "Append new data chunk to an existing session",
+                "requestBody":{
+                    "description": "request body contains session ID and data in the form of comma-separated values and newlines for multiple rows",
+                    "content":{
+                        "application/json":{
+                            "example":{
+                                "id": "session-id",
+                                "data": "100,23,7\n70,25,9"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+        "/api/sessions/{id}":{
+            "get":{
+                "summary": "Retrieve a session",
+                "description": "get CSV file providing session ID and optional groupid, in the form sessionid@groupid",
+                "parameters": [
+                    {
+                      "name": "id",
+                      "in": "path",
+                      "description": "ID of the session",
+                      "required": true,
+                      "schema": {
+                        "type": "string"
+                      }
+                    }
+                  ],
+                "responses":{
+                    "200":{
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        }
+    }
+}
