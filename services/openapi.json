@@ -25,6 +25,7 @@
     "paths": {
         "/api/session": {
             "post":{
+                "tags":["session"],
                 "summary": "Request a new session",
                 "description": "Request a new session, providing attributes (fields) and optional group",
                 "requestBody":{
@@ -37,10 +38,16 @@
                             }
                         }
                     }
+                },
+                "responses":{
+                    "200":{
+                        "description": "Successful operation"
+                    }
                 }
             },
 
             "put":{
+                "tags":["session"],
                 "summary": "Update an existing session",
                 "description": "Append new data chunk to an existing session",
                 "requestBody":{
@@ -53,12 +60,18 @@
                             }
                         }
                     }
+                },
+                "responses":{
+                    "200":{
+                        "description": "Successful operation"
+                    }
                 }
             }
         },
 
         "/api/sessions/{id}":{
             "get":{
+                "tags":["session"],
                 "summary": "Retrieve a session",
                 "description": "get CSV file providing session ID and optional groupid, in the form sessionid@groupid",
                 "parameters": [
