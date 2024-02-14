@@ -73,16 +73,49 @@
             "get":{
                 "tags":["session"],
                 "summary": "Retrieve a session",
-                "description": "get CSV file providing session ID and optional groupid, in the form sessionid@groupid",
+                "description": "get CSV file providing session ID",
                 "parameters": [
                     {
-                      "name": "id",
-                      "in": "path",
-                      "description": "ID of the session",
-                      "required": true,
-                      "schema": {
-                        "type": "string"
-                      }
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the session",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                  ],
+                "responses":{
+                    "200":{
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        },
+
+        "/api/sessions/{gid}/{id}":{
+            "get":{
+                "tags":["session"],
+                "summary": "Retrieve a session in a group",
+                "description": "get CSV file providing group ID and session ID",
+                "parameters": [
+                    {
+                        "name": "gid",
+                        "in": "path",
+                        "description": "Group ID of the session",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the session",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                   ],
                 "responses":{

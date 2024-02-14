@@ -1,7 +1,10 @@
 const Core = require('./core');
 
+const fs = require('fs');
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUI    = require("swagger-ui-express");
+const { SwaggerTheme } = require('swagger-themes');
+
 /*
 const swoptions = {
 	definition: {
@@ -19,10 +22,18 @@ const swoptions = {
 	}
 };
 */
+const theme = new SwaggerTheme();
+
 
 const swoptions = {
 	definition: require("./openapi.json"),
 	apis: [__filename]
+};
+
+const opts = {
+	//explorer: true,
+	//customCss: theme.getBuffer('dark')
+	//customCssUrl: "./public/hub.css"
 };
 
 
@@ -46,10 +57,20 @@ API.init = (app)=>{
 	app.get(API.BASE+"sessions/:id", (req, res) => {
 		let sesid = req.params.id;
 
-		sesid = sesid.split("@");
+		let fpath = Core.getFullPathCSV(sesid);
 
-		let fpath = Core.getFullPathCSV(sesid[0], sesid[1]);
-		res.sendFile(fpath);
+		if (!fs.existsSync(fpath)) res.send(false);
+		else res.sendFile(fpath);
+	});
+
+	app.get(API.BASE+"sessions/:gid/:id", (req, res) => {
+		let sesid = req.params.id;
+		let gid   = req.params.gid;
+
+		let fpath = Core.getFullPathCSV(sesid, gid);
+
+		if (!fs.existsSync(fpath)) res.send(false);
+		else res.sendFile(fpath);
 	});
 
 	// API docs endpoint
@@ -57,7 +78,7 @@ API.init = (app)=>{
 	app.use(
 		"/api-docs", 
 		swaggerUI.serve, 
-		swaggerUI.setup(swaggerSpec, { explorer: true })
+		swaggerUI.setup(swaggerSpec, opts )
 	);
 };
 
