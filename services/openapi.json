@@ -41,7 +41,20 @@
                 },
                 "responses":{
                     "200":{
-                        "description": "Successful operation"
+                        "description": "Successful operation, returns session ID",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type": "object",
+                                    "properties":{
+                                        "id":{
+                                            "type": "string",
+                                            "description": "Session ID"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
