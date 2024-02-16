@@ -71,6 +71,8 @@ Core.requestNewSession = (o)=>{
     let sesid = Core.generateSessionID();
     console.log("New session ID: "+sesid);
 
+    if (o.actor) sesid += "@"+o.actor;
+
     let groupid = o.groupid;
     let fname = Core.getFullPathCSV(sesid,groupid);
 
