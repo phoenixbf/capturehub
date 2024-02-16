@@ -86,13 +86,22 @@
             "get":{
                 "tags":["session"],
                 "summary": "Retrieve a session",
-                "description": "get CSV file providing session ID",
+                "description": "Retrieve session file (CSV) by ID",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "description": "ID of the session",
                         "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "f",
+                        "in": "query",
+                        "description": "format (ascii, json). If not defined, CSV format is returned",
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
@@ -110,7 +119,7 @@
             "get":{
                 "tags":["session"],
                 "summary": "Retrieve a session in a group",
-                "description": "get CSV file providing group ID and session ID",
+                "description": "Retrieve session file (CSV) by group ID and session ID",
                 "parameters": [
                     {
                         "name": "gid",
@@ -126,6 +135,15 @@
                         "in": "path",
                         "description": "ID of the session",
                         "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "f",
+                        "in": "query",
+                        "description": "format (ascii, json). If not defined, CSV format is returned",
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }

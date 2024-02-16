@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="appicon.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Sample">
+<link rel="apple-touch-icon" href="appicon.png">
+
+<title>Time-driven sample</title>
+
+<script type="text/javascript" src="../capture.js"></script>
+<script>
+let px,py;
+
+// We setup address of the CaptureHub
+let addr = "http://localhost:8070/";
+let urlparams = new URLSearchParams( window.location.search );
+if (urlparams.get("a")) addr = urlparams.get("a");
+
+CaptureHub.setHubServer(addr);
+
+// Keep track of mouse coords
+window.addEventListener('mousemove', (event) => {
+    px = event.clientX;
+    py = event.clientY;
+
+    //console.log(px,py);
+});
+
+// On page ready
+window.addEventListener('load', ()=>{
+
+    // We setup onFrame routine, returning a state with current mouse coords on each tick
+    CaptureHub.setOnFrame(()=>{
+        return {
+            x: px, 
+            y: py
+        }
+    }).setActorName("myMouse").start(); // start capturing. That's it!
+
+});
+</script>
+</head>
+
+<body >
+    <h1>Sample</h1>
+</body>

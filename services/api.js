@@ -56,11 +56,31 @@ API.init = (app)=>{
 
 	app.get(API.BASE+"sessions/:id", (req, res) => {
 		let sesid = req.params.id;
+		let format  = req.query.f;
 
 		let fpath = Core.getFullPathCSV(sesid);
 
-		if (!fs.existsSync(fpath)) res.send(false);
-		else res.sendFile(fpath);
+		if (!fs.existsSync(fpath)){
+			res.send(false);
+			return;
+		}
+
+		if (format === "ascii"){
+			let str = fs.readFileSync(fpath, 'utf8');
+			res.send(str);
+			return;
+		}
+
+		if (format === "json"){
+			let str = fs.readFileSync(fpath, 'utf8');
+			//str = str.split("\n");
+			//res.send(str);
+			let json = Core.convertCSVtoJSON(str);
+			res.send(json);
+			return;
+		}
+		
+		res.sendFile(fpath);
 	});
 
 	app.get(API.BASE+"sessions/:gid/:id", (req, res) => {
@@ -80,6 +100,12 @@ API.init = (app)=>{
 		swaggerUI.serve, 
 		swaggerUI.setup(swaggerSpec, opts )
 	);
+/*
+	app.use('*.css', (req, res, next) => {
+		res.set('Content-Type', 'text/css');
+		next();
+	});
+*/
 };
 
 module.exports = API;

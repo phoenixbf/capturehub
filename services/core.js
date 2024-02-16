@@ -59,6 +59,29 @@ Core.getFullPathCSV = (sesid, gid)=>{
     return fname;
 };
 
+Core.convertCSVtoJSON = (csvdata)=>{
+    let d = csvdata.split("\n");
+    let fields = d[0].split(Core.CSV_SEP);
+    
+    let numf = fields.length;
+    if (numf < 1) return undefined;
+
+    let json = [];
+
+    for (let c=1; c<d.length; c++){
+        let r = {};
+        let values = d[c].split(Core.CSV_SEP);
+
+        for (let f=0; f<numf; f++){
+            r[ fields[f] ] = values[f];
+        }
+
+        json.push(r);
+    }
+
+    return json;
+};
+
 Core.requestNewSession = (o)=>{
     let res = {};
 
