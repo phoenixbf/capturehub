@@ -27,14 +27,15 @@
             "post":{
                 "tags":["session"],
                 "summary": "Request a new session",
-                "description": "Request a new session, providing attributes (fields) and optional group",
+                "description": "Request a new session, providing attributes to track and optional group and friendly name",
                 "requestBody":{
-                    "description": "fields in the form of strings array, and an optional group ID",
+                    "description": "Fields (attributes) in the form of strings array. Optional group ID and friendly actor name",
                     "content":{
                         "application/json":{
                             "example":{
                                 "fields": ["x","y","z"],
-                                "groupid": "experiment01"
+                                "groupid": "experiment01",
+                                "actor": "friendlyName"
                             }
                         }
                     }

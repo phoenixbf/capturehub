@@ -13,7 +13,7 @@ Core.conf = {};
 
 
 Core.init = ()=>{
-
+    Core.recordMaxSize = Core.convertMBToBytes(10); // Max size allowed per CSV (bytes). Default 10 Mb
     Core.dirRecords = path.join(__dirname,"/../records/");
 
     let configpath = path.join(__dirname,"/../config.json");
@@ -23,10 +23,15 @@ Core.init = ()=>{
 		Core.conf = JSON.parse( fs.readFileSync(configpath, 'utf8') );
 		console.log("Found custom config " + configpath);
 
-        if (Core.conf.recordsfolder) Core.dirRecords = Core.conf.recordsfolder;
+        if (Core.conf.recordsfolder) Core.dirRecords    = Core.conf.recordsfolder;
+        if (Core.conf.recordMaxSize) Core.recordMaxSize = Core.convertMBToBytes(Core.conf.recordMaxSize);
     }
 
     if (!fs.existsSync(Core.dirRecords)) makeDir.sync(Core.dirRecords);
+};
+
+Core.convertMBToBytes = (v)=>{
+    return parseInt(1000000 * v);
 };
 
 Core.generateYMD = ()=>{
@@ -132,6 +137,11 @@ Core.updateSession = (o)=>{
 
     let fname = Core.getFullPathCSV(o.id, o.groupid);
     if (!fs.existsSync(fname)) return false;
+
+    let stats = fs.statSync(fname);
+    //console.log("Size:"+stats.size);
+
+    if (stats.size > Core.recordMaxSize) return false;
 
     fs.appendFile(fname, data, 'utf8', err => {
         if (err) throw err;

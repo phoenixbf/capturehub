@@ -20,12 +20,9 @@
 <script>
 let px,py;
 
-// We setup address of the CaptureHub
-let addr = "http://localhost:8070/";
+// Search in url params for remote address of the CaptureHub, if not found assumes it is local server.
 let urlparams = new URLSearchParams( window.location.search );
-if (urlparams.get("a")) addr = urlparams.get("a");
-
-CaptureHub.setHubServer(addr);
+if (urlparams.get("a")) CaptureHub.setHubServer(urlparams.get("a"));
 
 // Listen mouse coords
 window.addEventListener('mousemove', (event) => {

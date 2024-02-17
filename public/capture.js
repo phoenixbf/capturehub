@@ -14,7 +14,8 @@ CaptureHub.init = ()=>{
     var i = path.lastIndexOf('/');
     if (i !== -1) path = path.substring( 0, i+1 );
 */
-    CaptureHub._addr = undefined;
+    // Defaults to local server, this is not the typical case and you generally tell where is remote hub via setHubServer()
+    CaptureHub._addr = window.location.origin+"/";
     
     CaptureHub._id    = undefined;
     CaptureHub._gid   = undefined;
@@ -52,6 +53,17 @@ CaptureHub.start = (interval)=>{
     let dt = interval? interval : CaptureHub.T_INT;
 
     CaptureHub._uf = window.setInterval(CaptureHub._tick, dt);
+    return CaptureHub;
+};
+
+/**
+Set Datachunk size: how large is the packet sent to the Hub
+@param {Number} size - Number of frames per packet
+*/
+CaptureHub.setDataChunkSize = (size)=>{
+    if (size < 1) return CaptureHub;
+
+    CaptureHub.CHUNK_SIZE = size;
     return CaptureHub;
 };
 
