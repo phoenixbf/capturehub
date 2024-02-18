@@ -27,10 +27,16 @@ const theme = new SwaggerTheme();
 
 const swoptions = {
 	definition: require("./openapi.json"),
+	supportedSubmitMethods: [],
 	apis: [__filename]
 };
 
 const opts = {
+	swaggerOptions: {
+		//tryItOutEnabled: true
+		supportedSubmitMethods: []
+	},
+
 	//explorer: true,
 	//customCss: theme.getBuffer('dark')
 	//customCssUrl: "./public/hub.css"
