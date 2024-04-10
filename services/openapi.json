@@ -8,19 +8,16 @@
         "title": "CaptureHub API",
         "description": "This is the REST API for CaptureHub service, developed under H2IOSC project as part of task 7.7 (Immersive Analytics Hub). The service allows remote devices, labs, research nodes, online web-applications or public exhibits to track interactive sessions. The initial request allows to define custom attributes: if successful, a session ID is returned to client.",
 
-        "__contact": {
-            "name": "Swagger API Team",
-            "email": "apiteam@swagger.io",
-            "url": "http://swagger.io"
+        "contact": {
+            "name": "Bruno Fanini"
         },
     
-        "__license": {
-            "name": "Apache 2.0",
-            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+        "license": {
+            "name": "GPL v3"
         }
     },
 
-    "__servers": [
+    "servers": [
         {
             "url": "https://...."
         }
