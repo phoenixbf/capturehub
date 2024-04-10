@@ -7,6 +7,3 @@ It can be deployed on any node to capture remote interactions. A cluster deploym
 1) Install Node.js
 2) Run `npm install` from root folder
 3) Basic launch via `npm start` or cluster launch via `pm2 start`
-
-## OpenAPI Specification
-<img src="https://validator.swagger.io/validator?url=https://raw.githubusercontent.com/phoenixbf/capturehub/main/services/openapi.json">
