@@ -1,6 +1,9 @@
 const Core = require('./core');
 
-const fs = require('fs');
+const fs   = require('fs');
+const path = require('path');
+const fg   = require('fast-glob');
+
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUI    = require("swagger-ui-express");
 const { SwaggerTheme } = require('swagger-themes');
@@ -92,6 +95,16 @@ API.init = (app)=>{
 	app.get(API.BASE+"sessions/:gid/:id", (req, res) => {
 		let sesid = req.params.id;
 		let gid   = req.params.gid;
+
+		if (sesid==="*"){
+			let gfolder = path.join(Core.dirRecords, gid);
+			let frecords = fg.sync("{*.csv,*.json}", {cwd: gfolder, follow: true});
+
+			console.log(frecords)
+
+			res.send(frecords);
+			return;
+		}
 
 		let fpath = Core.getFullPathCSV(sesid, gid);
 

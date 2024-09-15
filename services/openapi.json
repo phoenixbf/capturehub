@@ -157,6 +157,30 @@
                     }
                 }
             }
+        },
+
+        "/api/sessions/{gid}/*":{
+            "get":{
+                "tags":["session"],
+                "summary": "Retrieve a list of records",
+                "description": "Retrieve the list of sessions ID under the given group ID",
+                "parameters": [
+                    {
+                        "name": "gid",
+                        "in": "path",
+                        "description": "Group ID of the session",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                  ],
+                "responses":{
+                    "200":{
+                        "description": "Successful operation"
+                    }
+                }
+            }
         }
     }
 }
