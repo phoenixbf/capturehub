@@ -26,9 +26,16 @@ CaptureHub.init = ()=>{
     CaptureHub._bReqSes = false;
     
     CaptureHub._resetDataChunk();
-    CaptureHub._bRec = true;
+    CaptureHub._bRec = false;
     
     CaptureHub._uf = undefined;
+};
+
+/**
+ is CaptureHub recording
+ */
+CaptureHub.isRecording = ()=>{
+    return CaptureHub._bRec;
 };
 
 /**
@@ -47,12 +54,17 @@ Start recording using ticking
 @param {Number} interval - Time interval (milliseconds)
 */
 CaptureHub.start = (interval)=>{
+    if (CaptureHub._bRec) return CaptureHub; // Already recording
+
     if (CaptureHub._uf) return CaptureHub;
     if (!CaptureHub._addr) return CaptureHub;
 
     let dt = interval? interval : CaptureHub.T_INT;
 
     CaptureHub._uf = window.setInterval(CaptureHub._tick, dt);
+
+    CaptureHub._bRec = true;
+
     return CaptureHub;
 };
 
@@ -102,6 +114,8 @@ CaptureHub.requestNewSession = (fields)=>{
 Stop current session
 */
 CaptureHub.stop = ()=>{
+    if (!CaptureHub._bRec) return CaptureHub; // Already stopped
+
     CaptureHub._sendDataChunk();
     
     CaptureHub._bRec = false;

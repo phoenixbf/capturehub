@@ -2,6 +2,7 @@ const express = require('express');
 const http    = require('http');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const API  = require('./api');
 const Core = require('./core');
@@ -14,6 +15,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', express.static(Core.DIR_PUBLIC));
+
+app.use(cors({
+	credentials: true,
+	origin: true
+}));
 
 Core.init();
 API.init( app );
@@ -32,6 +38,5 @@ if (Core.conf.proxies){
 }
 
 http.createServer(app).listen(PORT, ()=>{
-	console.log("CaptureHub up and running");
-
+	console.log("CaptureHub up and running on port: "+PORT);
 });
