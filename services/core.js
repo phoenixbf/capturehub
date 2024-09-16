@@ -64,6 +64,18 @@ Core.getFullPathCSV = (sesid, gid)=>{
     return fname;
 };
 
+Core.getFullPathJSON = (sesid, gid)=>{
+    if (gid){
+        let fname = gid+"/"+sesid+".json";
+        fname = path.join(Core.dirRecords, fname);
+        return fname;
+    }
+
+    let fname = sesid+".json";
+    fname = path.join(Core.dirRecords, fname);
+    return fname;
+};
+
 Core.convertCSVtoJSON = (csvdata)=>{
     let d = csvdata.split("\n");
     let fields = d[0].split(Core.CSV_SEP);

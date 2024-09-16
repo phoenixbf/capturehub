@@ -112,7 +112,38 @@ API.init = (app)=>{
 		else res.sendFile(fpath);
 	});
 
+	app.get(API.BASE+"aggregates/:id", (req, res) => {
+		let sesid = req.params.id;
+		//let format  = req.query.f;
+
+		let fpath = Core.getFullPathJSON(sesid);
+
+		if (!fs.existsSync(fpath)){
+			res.send(false);
+			return;
+		}
+		
+		res.sendFile(fpath);
+	});
+
+	app.get(API.BASE+"aggregates/:gid/:id", (req, res) => {
+		let sesid = req.params.id;
+		let gid   = req.params.gid;
+		//let format  = req.query.f;
+
+		let fpath = Core.getFullPathJSON(sesid, gid);
+
+		if (!fs.existsSync(fpath)){
+			res.send(false);
+			return;
+		}
+		
+		res.sendFile(fpath);
+	});
+
+
 	// API docs endpoint
+	//=================================================
 	const swaggerSpec = swaggerJSDoc(swoptions);
 	app.use(
 		"/api-docs", 
