@@ -50,6 +50,14 @@ CaptureHub.setHubServer = (addr)=>{
 };
 
 /**
+ Set CaptureHub server
+ @return {String} addr - Hub address
+ */
+CaptureHub.getHubServer = ()=>{
+    return CaptureHub._addr;
+};
+
+/**
 Start recording using ticking
 @param {Number} interval - Time interval (milliseconds)
 */
