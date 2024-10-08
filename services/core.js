@@ -23,11 +23,21 @@ Core.init = ()=>{
 		Core.conf = JSON.parse( fs.readFileSync(configpath, 'utf8') );
 		console.log("Found custom config " + configpath);
 
-        if (Core.conf.recordsfolder) Core.dirRecords    = Core.conf.recordsfolder;
-        if (Core.conf.recordMaxSize) Core.recordMaxSize = Core.convertMBToBytes(Core.conf.recordMaxSize);
+        if (Core.conf.records){
+            let R = Core.conf.records;
+
+            if (R.folder)  Core.dirRecords    = R.folder;
+            if (R.maxSize) Core.recordMaxSize = Core.convertMBToBytes(R.maxSize);
+        }
+
     }
 
-    if (!fs.existsSync(Core.dirRecords)) makeDir.sync(Core.dirRecords);
+    if (!fs.existsSync(Core.dirRecords)){
+        console.log("Recreating records folder");
+        makeDir.sync(Core.dirRecords);
+    }
+
+    console.log("- Records folder: "+Core.dirRecords);
 };
 
 Core.convertMBToBytes = (v)=>{
